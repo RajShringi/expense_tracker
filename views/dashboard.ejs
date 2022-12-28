@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+      integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body class="text-gray-600 bg-gray-100">
+    <% include partials/header %>
+    <div class="container mx-auto flex justify-between items-start">
+      <div class="w-full">
+        <% if(incomes) { %>
+        <section
+          class="shadow bg-green-50 p-2 rounded-lg max-w-3xl mx-auto mb-8"
+        >
+          <h1 class="text-2xl mb-4">
+            <% if(month) { %> <%=moment().month(month-1).format('MMMM')%>,
+            Income:
+            <span class="text-green-500"
+              >$<%=thisMonthIncome[0].totalAmount%></span
+            >
+            <% } %> <% if(start_date && end_date) { %> Income:
+            <span class="text-green-500"
+              >$<%=thisMonthIncome[0].totalAmount%>
+            </span>
+            from <%=moment(start_date).format('YYYY-MM-DD')%> to
+            <%=moment(end_date).format('YYYY-MM-DD')%> <% } %>
+          </h1>
+          <div class="flex justify-start items-center flex-wrap">
+            <% incomes.forEach(income => { %>
+            <div class="p-4 border rounded-lg bg-white shadow mr-4 mb-4">
+              <h3 class="my-2 text-xl"><%=income.name%></h3>
+              <p class="my-2 text-gray-500"><%=income.source%></p>
+              <p class="my-2"><%=moment(income.date).format("MMM Do YY")%></p>
+              <p class="my-4 text-green-400">$<%=income.amount%></p>
+              <a
+                class="p-2 inline-block mr-4 rounded text-base bg-sky-400 text-white"
+                href="/incomes/<%=income._id%>/edit"
+                ><i class="fa-solid fa-pen-to-square"></i>edit</a
+              >
+              <a
+                class="p-2 inline-block mr-4 rounded text-base text-white bg-rose-400"
+                href="/incomes/<%=income._id%>/delete"
+                ><i class="fa-solid fa-pen-to-square"></i>Delete</a
+              >
+            </div>
+            <% }) %>
+          </div>
+          <% if(thisMonthIncome) { %>
+          <section class="border-t border-gray-400 p-2 max-w-3xl mx-auto my-2">
+            <h1 class="text-xl">
+              Total Income Amount: $<%=thisMonthIncome[0].totalAmount%>
+            </h1>
+          </section>
+          <% } %>
+        </section>
+        <% } %> <% if(expenses) { %>
+        <section class="shadow bg-red-50 p-2 rounded-lg max-w-3xl mx-auto mb-8">
+          <h1 class="text-2xl mb-4">
+            <% if(month) { %> <%=moment().month(month-1).format('MMMM')%>,
+            Expense:
+            <span class="text-rose-500"
+              >$<%=thisMonthExpenses[0].totalAmount%></span
+            >
+            <% } %> <% if(start_date && end_date) { %> Expense:
+            <span class="text-rose-500"
+              >$<%=thisMonthExpenses[0].totalAmount%>
+            </span>
+            from <%=moment(start_date).format('YYYY-MM-DD')%> to
+            <%=moment(end_date).format('YYYY-MM-DD')%> <% } %>
+          </h1>
+          <div class="flex justify-start items-center flex-wrap">
+            <% expenses.forEach(expense => { %>
+            <div class="p-4 border bg-white rounded-lg shadow mr-4 mb-4">
+              <h3 class="my-2 text-xl"><%=expense.name%></h3>
+              <p class="my-2 text-gray-500"><%=expense.category%></p>
+              <p class="my-2"><%=moment(expense.date).format("MMM Do YY")%></p>
+              <p class="my-4 text-rose-500">$<%=expense.amount%></p>
+              <a
+                class="p-2 inline-block mr-4 rounded text-base bg-sky-400 text-white"
+                href="/expenses/<%=expense._id%>/edit"
+                ><i class="fa-solid fa-pen-to-square"></i>edit</a
+              >
+              <a
+                class="p-2 inline-block mr-4 rounded text-base text-white bg-rose-400"
+                href="/expenses/<%=expense._id%>/delete"
+                ><i class="fa-solid fa-pen-to-square"></i>Delete</a
+              >
+            </div>
+            <% }) %>
+          </div>
+          <% if(thisMonthExpenses) { %>
+          <section class="border-t border-gray-400 p-2 max-w-3xl mx-auto my-2">
+            <h1 class="text-xl">
+              Total Expense Amount: $<%=thisMonthExpenses[0].totalAmount%>
+            </h1>
+          </section>
+          <% } %>
+        </section>
+        <% } %> <% if(saving) { %>
+        <section
+          class="border-2 border-gray-400 p-2 rounded-lg max-w-3xl mx-auto mb-8 bg-white"
+        >
+          <h1 class="text-2xl">Saving: $<%=saving%></h1>
+        </section>
+        <% } %>
+      </div>
+      <div class="w-full">
+        <div>
+          <form
+            action="/dashboards"
+            method="get"
+            class="max-w-sm p-4 mx-auto rounded-lg mb-4 w-full bg-white shadow"
+          >
+            <h1 class="text-center text-xl mb-4 border-b p-1">
+              Filter by month
+            </h1>
+            <select
+              name="months"
+              class="border border-gray-300 block w-full p-3 rounded-lg my-4"
+            >
+              <option name="jan" value="1">JAN</option>
+              <option name="feb" value="2">FEB</option>
+              <option name="mar" value="3">MAR</option>
+              <option name="apr" value="4">APR</option>
+              <option name="may" value="5">MAY</option>
+              <option name="jun" value="6">JUN</option>
+              <option name="july" value="7">JULY</option>
+              <option name="aug" value="8">AUG</option>
+              <option name="sep" value="9">SEP</option>
+              <option name="oct" value="10">OCT</option>
+              <option name="nov" value="11">NOV</option>
+              <option name="dec" value="12">DEC</option>
+            </select>
+            <input
+              class="border border-gray-300 block w-full p-3 rounded-lg my-4"
+              type="number"
+              min="1900"
+              max="2099"
+              value="<%=Number(moment(new Date()).format('YYYY'))%>"
+              name="selectYear"
+            />
+
+            <input
+              class="block w-full p-3 rounded-lg my-4 hover:border-none bg-sky-500 text-white hover:bg-sky-700 cursor-pointer"
+              type="submit"
+              value="Submit"
+            />
+          </form>
+
+          <form
+            action="/dashboards"
+            class="max-w-sm p-4 mx-auto rounded-lg mb-4 w-full bg-white shadow"
+            method="get"
+          >
+            <h1 class="text-center text-xl mb-4 border-b p-1">
+              Filter by Expense or Income Source
+            </h1>
+            <label class="p-3" for="date">Start Date</label>
+            <input
+              class="border border-gray-300 block w-full p-3 rounded-lg my-4"
+              type="date"
+              name="start_date"
+              id="date"
+            />
+            <label class="p-3" for="date">End Date</label>
+            <input
+              class="border border-gray-300 block w-full p-3 rounded-lg my-4"
+              type="date"
+              name="end_date"
+              id="date"
+            />
+            <label class="p-3" for="categories">Categories</label>
+            <select
+              class="border border-gray-300 block w-full p-3 rounded-lg my-4"
+              name="category"
+            >
+              <option value="none">Filter by Expense</option>
+              <% categories.forEach(category => { %>
+              <option name="<%=category%>" value="<%=category%>">
+                <%=category%>
+              </option>
+              <% }) %>
+            </select>
+
+            <label class="p-3" for="categories">Income Source</label>
+            <select
+              class="border border-gray-300 block w-full p-3 rounded-lg my-4"
+              name="source"
+            >
+              <option value="none">Filter by Income Source</option>
+              <% sources.forEach(source => { %>
+              <option name="<%=source%>" value="<%=source%>">
+                <%=source%>
+              </option>
+              <% }) %>
+            </select>
+            <input
+              class="block w-full p-3 rounded-lg my-4 hover:border-none bg-sky-500 text-white hover:bg-sky-700 cursor-pointer"
+              type="submit"
+              value="Submit"
+            />
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

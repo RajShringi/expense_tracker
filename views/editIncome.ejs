@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Edit income</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body class="text-gray-600">
+    <% include partials/header %>
+    <div class="container mx-auto">
+      <form
+        class="max-w-xl mx-auto border rounded-lg p-8"
+        action="/incomes/<%=income._id%>"
+        method="post"
+      >
+        <input
+          class="border border-gray-300 block w-full p-3 rounded-lg my-4"
+          type="text"
+          name="name"
+          placeholder="Name"
+          value="<%=income.name%>"
+        />
+        <input
+          class="border border-gray-300 block w-full p-3 rounded-lg my-4"
+          type="text"
+          name="source"
+          placeholder="Ex: salary, trading, bussiness"
+          value="<%=income.source%>"
+        />
+        <input
+          class="border border-gray-300 block w-full p-3 rounded-lg my-4"
+          type="number"
+          name="amount"
+          placeholder="Amount"
+          value="<%=income.amount%>"
+        />
+        <input
+          class="border border-gray-300 block w-full p-3 rounded-lg my-4"
+          type="date"
+          name="date"
+          placeholder="Date"
+          value="<%=moment(income.date).format('YYYY-MM-DD')%>"
+        />
+        <input
+          class="block w-full p-3 rounded-lg my-4 hover:border-none bg-sky-500 text-white hover:bg-sky-700 cursor-pointer"
+          type="submit"
+          value="Edit Income"
+        />
+      </form>
+    </div>
+  </body>
+</html>

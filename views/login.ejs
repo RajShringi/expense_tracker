@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Login</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+      integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body class="text-gray-600">
+    <% include partials/header %>
+    <div class="container mx-auto">
+      <div
+        class="max-w-sm border border-gray-300 rounded-xl p-8 mx-auto bg-white"
+      >
+        <a
+          class="p-4 block text-center border rounded-xl mb-8"
+          href="/auth/github"
+          ><i class="fa-brands fa-github text-lg"></i> Login with Github</a
+        >
+
+        <a
+          class="p-4 block text-center border rounded-xl mb-8"
+          href="/auth/google"
+          ><i class="fa-brands fa-google"></i> Login with Google</a
+        >
+        <form action="/login" method="post">
+          <input
+            class="border border-gray-300 block w-full p-3 rounded-lg my-4"
+            type="email"
+            name="email"
+            placeholder="Email"
+          />
+          <input
+            class="border border-gray-300 block w-full p-3 rounded-lg my-4"
+            type="password"
+            name="password"
+            placeholder="Password"
+          />
+          <input
+            class="block w-full p-3 rounded-lg my-4 hover:border-none bg-sky-500 text-white hover:bg-sky-700 cursor-pointer"
+            type="submit"
+            value="Login"
+          />
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
